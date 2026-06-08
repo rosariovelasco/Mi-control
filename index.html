@@ -288,7 +288,7 @@ select.finput option{background:#2c2c2e;color:#fff}
     </div>
     <button class="mh-cfg" onclick="openSetupC(true)">⚙ Configurar</button>
   </div>
-  <div class="alert-bar" id="c-alert">⚠ Crédito disponible bajo el límite de alerta</div>
+  <div class="alert-bar" id="c-alert">⚠ El gasto superó el límite de alerta</div>
 
   <div id="c-prompt" style="display:none">
     <div class="setup-prompt">
@@ -389,7 +389,7 @@ select.finput option{background:#2c2c2e;color:#fff}
           <input class="finput" id="sc-pago" type="number" inputmode="numeric" min="1" max="31" placeholder="10"></div>
       </div>
       <div class="frow">
-        <div class="fg"><label class="flbl">Alerta disponible menor a (0 = sin alerta)</label>
+        <div class="fg"><label class="flbl">Alerta cuando gasto supere (0 = sin alerta)</label>
           <input class="finput" id="sc-alert" type="number" inputmode="decimal" placeholder="0"></div>
         <div class="fg"><label class="flbl">Fecha inicio</label>
           <input class="finput" id="sc-date" type="date"></div>
@@ -647,7 +647,7 @@ function renderC(){
   }
   document.getElementById('c-cierre').textContent=C.ok?nextDayDate(C.closingDay):'—';
   document.getElementById('c-pago').textContent=C.ok?nextDayDate(C.paymentDay):'—';
-  document.getElementById('c-alert').classList.toggle('show', C.ok && C.alertLimit>0 && av<C.alertLimit);
+  document.getElementById('c-alert').classList.toggle('show', C.ok && C.alertLimit>0 && u>C.alertLimit);
   document.getElementById('c-prompt').style.display=C.ok?'none':'block';
   document.getElementById('c-body').style.display=C.ok?'block':'none';
   if(C.ok) renderMovs('c');
