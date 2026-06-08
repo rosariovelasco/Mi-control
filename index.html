@@ -47,6 +47,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .hc-amount.blue{color:var(--blue)}
 .hc-amount.purple{color:var(--purple)}
 .hc-amount.green{color:var(--green)}
+.hc-amount.red{color:var(--red)}
 .hc-sub{font-size:13px;color:var(--muted);margin-left:16px;margin-top:8px}
 .hc-arrow{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:26px;color:var(--muted)}
 
@@ -582,9 +583,11 @@ function renderHome(){
     const b=calcBal();
     document.getElementById('hd-name').textContent=D.name;
     const el=document.getElementById('hd-amount');
-    el.textContent=fmt(b);
-    el.className='hc-amount '+(b>=0?'green':'r');
-    document.getElementById('hd-sub').textContent=`Saldo disponible · desde ${fmtDate(D.startDate)}`;
+    el.textContent=(b<0?'-':'')+fmt(b);
+    el.className='hc-amount '+(b>=0?'green':'red');
+    document.getElementById('hd-sub').textContent=b<0
+      ?`⚠ Usando línea de crédito`
+      :`Saldo disponible · desde ${fmtDate(D.startDate)}`;
   } else {
     document.getElementById('hd-name').textContent='Sin configurar';
     document.getElementById('hd-amount').textContent='—';
@@ -610,11 +613,11 @@ function renderHome(){
 function renderD(){
   const b=calcBal(), inc=calcInc(), exp=calcExp();
   document.getElementById('d-title').textContent=D.ok?D.name:'Cuenta Corriente';
-  document.getElementById('d-sub').textContent=D.ok?`Saldo: ${fmt(b)}`:'';
+  document.getElementById('d-sub').textContent=D.ok?(b<0?`⚠ Línea de crédito: -${fmt(b)}`:`Saldo: ${fmt(b)}`):'';
   document.getElementById('d-inc').textContent=fmt(inc);
   document.getElementById('d-exp').textContent=fmt(exp);
   const balEl=document.getElementById('d-bal');
-  balEl.textContent=fmt(b);
+  balEl.textContent=(b<0?'-':'')+fmt(b);
   balEl.className='strip-val '+(b>=0?'g':'r');
   document.getElementById('d-alert').classList.toggle('show', D.ok && D.alertLimit>0 && b<D.alertLimit);
   document.getElementById('d-prompt').style.display=D.ok?'none':'block';
